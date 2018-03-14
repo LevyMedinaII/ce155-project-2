@@ -1,17 +1,12 @@
-#include <iostream>
-#include <cstdlib>
+#include "Process.h"
 
 using namespace std;
 
-class Process {
-  int arrivalTime, burstTime, priority;
-  public:
-    Process(int, int, int);
-    int getArrivalTime();
-    int getBurstTime();
-    int getPriority();
-};
-
+Process::Process() {
+  arrivalTime = 0;
+  burstTime = 0;
+  priority = 0;
+}
 Process::Process (int arrival, int burst, int p) {
   arrivalTime = arrival;
   burstTime = burst;
@@ -21,3 +16,7 @@ Process::Process (int arrival, int burst, int p) {
 int Process::getArrivalTime() { return arrivalTime; }
 int Process::getBurstTime() { return burstTime; }
 int Process::getPriority() { return priority; }
+
+void Process::setArrivalTime(int arrival) { arrivalTime = arrival; }
+void Process::setBurstTime(int burst) { burstTime = burst; }
+void Process::setPriority(int p) { priority = p; }

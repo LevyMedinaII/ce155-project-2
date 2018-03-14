@@ -2,52 +2,43 @@
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
-using namespace std;
+#include "Process.h"
+#include "ProcessBlock.h"
 
 // Function declarations
-string* parseLine(string line);
-string* parseProcessInfo(string line);
-
-int cursorIndex = 0, blockIndex = 0, processIndex = 0;
-
+std::string* parseLine(std::string line);
+std::string* parseProcessInfo(std::string line);
 
 int main(int argc, char * argv[]) {
-  ifstream infile(argv[1]);
-  string line;
-  int blockNumbers;  
+  std::ifstream infile(argv[1]);
+  std::string line;
+  std::vector<ProcessBlock> commandBlocks;
 
   while (getline(infile, line)) {
-    if (cursorIndex < 1) {
-      blockNumbers = stoi(line);
-    } else {
-
-    }
-
-    
-
-
-
-    cout << "Line: " << line << endl;
-    parseLine(line);
-
-    cursorIndex++;
+    // each line of the input file is accessible here via <line>
   }
 
   return 1;
 }
 
 // Function definitions
-string* parseLine(string line) {
-  string delimiter = " ";
-  string token;
+std::string* parseLine(std::string line) {
+  /*
+   * Given a line of n elements,
+   * The 1st to the n-1th element can be obtained by iterating <token>
+   * the nth element can be obtained from <line> after the <token> loop
+   */
+  std::string delimiter = " ";
+  std::string token;
   size_t pos = 0;
   
-  while ((pos = line.find(delimiter)) != string::npos) {
+  while ((pos = line.find(delimiter)) != std::string::npos) {
       token = line.substr(0, pos);
-      cout << token << endl;
+      std::cout << token << std::endl;
       line.erase(0, pos + delimiter.length());
   }
-  cout << line << endl;
+  std::cout << line << std::endl;
 }
 

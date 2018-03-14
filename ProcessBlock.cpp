@@ -1,26 +1,21 @@
-#include <iostream>
-#include <cstdlib>
+#include "ProcessBlock.h"
 
-using namespace std;
-
-class ProcessBlock {
-  int processCount;
-  string command;
-  public:
-    ProcessBlock(int, string);
-    void setProcessCount(int);
-    void setCommand(string);
-    int getProcessCount();
-    string getCommand();
-};
-
-ProcessBlock::ProcessBlock (int n, string c) {
+ProcessBlock::ProcessBlock (int n, std::string c) {
   processCount = n;
   command = c;
 }
 
 void ProcessBlock::setProcessCount(int n) { processCount = n; }
-void ProcessBlock::setCommand(string c) { command = c; }
-int ProcessBlock::getProcessCount() { return processCount; }
-string ProcessBlock::getCommand() { return command; }
+void ProcessBlock::setCommand(std::string c) { command = c; }
 
+int ProcessBlock::getProcessCount() { return processCount; }
+std::string ProcessBlock::getCommand() { return command; }
+
+
+void ProcessBlock::pushProcess(Process p) {
+  if (processes.size() < processCount ) {
+    processes.push_back(p);
+  } else {
+    std::cout << "Error: Maximum allowable processes for block already reached." << std::endl;
+  }
+}
