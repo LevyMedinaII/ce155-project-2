@@ -15,13 +15,13 @@ int main(int argc, char * argv[]) {
   std::ifstream infile(argv[1]);
   std::string line;
   std::vector<ProcessBlock> commandBlocks;
-  int blockCount;
+  int blockCount = 0;
 
   // each line of the input file is accessible here via <line>
   while (getline(infile, line)) {
     // sets the number of process blocks
-    if (blockCount == NULL) {
-      blockCount = stoi(line);
+    if (blockCount == 0) {
+      blockCount = std::stoi(line);
     }
   }
 
