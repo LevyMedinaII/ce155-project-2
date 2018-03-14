@@ -2,10 +2,8 @@
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
-#include <string>
 #include <vector>
 
-#include "Process.h"
 #include "ProcessBlock.h"
 
 // Function declarations
@@ -22,7 +20,8 @@ int main(int argc, char * argv[]) {
   while (getline(infile, line)) {
     // sets the number of process blocks
     if (blockCount == 0) {
-      blockCount = std::stoi(line);
+      std::stringstream numBlocks(line);
+      numBlocks >> blockCount;
     }
   }
 
