@@ -43,7 +43,7 @@ int ProcessBlock::getEarliestArrivalProcessIndex() {
       earliestProcessIndex = i;
     }
   }
-  return earliestProcessIndex + 1;
+  return earliestProcessIndex;
 }
 
 std::string ProcessBlock::doFirstComeFirstServe() {
@@ -51,19 +51,34 @@ std::string ProcessBlock::doFirstComeFirstServe() {
   Process currentProcess;
   int currentRunTime;
   int currentProcessIndex;
+  int currentBurstTime;
   std::string execution;
 
-  while (processes.size() > 0 ) {
-    currentProcess = getEarliestArrivalProcess();
-    currentRunTime = currentProcess.getArrivalTime();
-    currentProcessIndex = getEarliestArrivalProcessIndex();
+  currentProcess = getEarliestArrivalProcess();
+  currentRunTime = currentProcess.getArrivalTime();
+  currentProcessIndex = getEarliestArrivalProcessIndex();
+  currentBurstTime = currentProcess.getBurstTime();
 
+  while (processes.size() > 0 ) {
     output += std::to_string(currentRunTime);
     output += " ";
-    output += std::to_string(currentProcessIndex);
+    output += std::to_string(currentProcessIndex + 1);
+    output += " ";
+    output += std::to_string(currentBurstTime) + "X";
+    output += "\n";
 
+    processes.erase(processes.begin() + currentProcessIndex);
+    currentRunTime += currentBurstTime;
+    currentProcess = getEarliestArrivalProcess();
+    if (currentRunTime < currentProcess.getArrivalTime()) {
+      currentRunTime = currentProcess.getArrivalTime();
+    }
+
+    currentProcessIndex = getEarliestArrivalProcessIndex();
+    currentBurstTime = currentProcess.getBurstTime();
   }
 
+  std::cout << output << std::endl;
 
   return output;
 }
@@ -71,6 +86,8 @@ std::string ProcessBlock::doFirstComeFirstServe() {
 
 void ProcessBlock::execute() {
   if (command == "FCFS") {
-
+    doFirstComeFirstServe();
+  } else if (command == "SJP") {
+    
   }
 }
