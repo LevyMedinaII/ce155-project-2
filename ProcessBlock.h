@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include "Process.h"
 
 class ProcessBlock {
@@ -11,11 +12,14 @@ class ProcessBlock {
 
     int getProcessCount();
     std::string getCommand();
+    Process getEarliestArrivalProcess();
+    int getEarliestArrivalProcessIndex();
 
     void setProcessCount(int);
     void setCommand(std::string);
     void pushProcess(Process);
-    Process getEarliestArrivalProcess();
-    Process popEarliestArrivalProcess();
+
+    std::string doFirstComeFirstServe();
+
     void execute();
 };

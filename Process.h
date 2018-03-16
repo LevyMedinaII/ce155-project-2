@@ -1,5 +1,8 @@
 class Process {
   int arrivalTime, burstTime, priority;
+  int remainingDuration;
+  bool isFinished;
+
   public:
     Process();
     Process(int, int, int);

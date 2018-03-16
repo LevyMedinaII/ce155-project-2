@@ -6,11 +6,15 @@ Process::Process() {
   arrivalTime = 0;
   burstTime = 0;
   priority = 0;
+  isFinished = false;
+  remainingDuration = 0;
 }
 Process::Process (int arrival, int burst, int p) {
   arrivalTime = arrival;
   burstTime = burst;
   priority = p;
+  isFinished = false;
+  remainingDuration = burstTime;
 }
 
 int Process::getArrivalTime() { return arrivalTime; }
