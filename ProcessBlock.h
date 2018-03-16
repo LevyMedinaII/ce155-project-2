@@ -15,4 +15,7 @@ class ProcessBlock {
     void setProcessCount(int);
     void setCommand(std::string);
     void pushProcess(Process);
+    Process getEarliestArrivalProcess();
+    Process popEarliestArrivalProcess();
+    void execute();
 };
