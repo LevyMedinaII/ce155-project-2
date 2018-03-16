@@ -20,7 +20,11 @@ Process::Process (int arrival, int burst, int p) {
 int Process::getArrivalTime() { return arrivalTime; }
 int Process::getBurstTime() { return burstTime; }
 int Process::getPriority() { return priority; }
+int Process::getRemainingDuration() { return remainingDuration; }
+bool Process::getFinishedStatus() { return isFinished; }
 
 void Process::setArrivalTime(int arrival) { arrivalTime = arrival; }
 void Process::setBurstTime(int burst) { burstTime = burst; }
 void Process::setPriority(int p) { priority = p; }
+void Process::setRemainingDuration(int duration) { remainingDuration = duration; }
+void Process::setFinishedStatus(bool status) { isFinished = status; }
