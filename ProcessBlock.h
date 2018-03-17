@@ -7,6 +7,10 @@ class ProcessBlock {
   int processCount;
   std::string command;
   std::vector<Process> processes;
+  std::vector<Process> readyQueue;
+  std::vector<Process> waitingQueue;
+  std::vector<Process> runningQueue;
+  
   public:
     ProcessBlock(int, std::string);
 
