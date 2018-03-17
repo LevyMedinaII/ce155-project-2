@@ -1,21 +1,16 @@
 class Process {
-  int arrivalTime, burstTime, priority;
-  int remainingDuration;
-  bool isFinished;
-
+  int index, arrivalTime, burstTime, priority;
+  
   public:
-    Process();
-    Process(int, int, int);
+    Process(int, int, int, int);
     
+    int getIndex();
     int getArrivalTime();
     int getBurstTime();
     int getPriority();
-    int getRemainingDuration();
-    bool getFinishedStatus();
 
+    void setIndex(int);
     void setArrivalTime(int);
     void setBurstTime(int);
     void setPriority(int);
-    void setRemainingDuration(int);
-    void setFinishedStatus(bool);
 };

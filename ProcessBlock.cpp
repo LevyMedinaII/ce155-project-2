@@ -1,81 +1,69 @@
 #include "ProcessBlock.h"
 
+// Constructor
 ProcessBlock::ProcessBlock (int n, std::string c) {
   processCount = n;
   command = c;
 }
 
-void ProcessBlock::setProcessCount(int n) { processCount = n; }
-void ProcessBlock::setCommand(std::string c) { command = c; }
-
+// Getters
 int ProcessBlock::getProcessCount() { return processCount; }
 std::string ProcessBlock::getCommand() { return command; }
 
-
-void ProcessBlock::pushProcess(Process p) {
-  if (processes.size() < processCount ) {
+// Add a process to the processes vector
+void ProcessBlock::addProcessToBlock(Process p) {
+  if (readyQueue.size() < processCount ) {
     processes.push_back(p);
   } else {
-    std::cout << "Error: Maximum allowable processes for block already reached." << std::endl;
+    std::cout << "Error: Maximum allowable readyQueue for block already reached." << std::endl;
   }
 }
 
-Process ProcessBlock::getEarliestArrivalProcess() {
-  Process earliestProcess = processes.at(0);
-  int earliestTime = processes.at(0).getArrivalTime();
+// Push all processes in block to the ready queue
+void ProcessBlock::pushAllToReady() {
+  for (int i = 0; i < processes.size(); i++) {
+    readyQueue.push_back(processes.at(i));
+  }
+}
 
-  for (int i = 1; i < processes.size(); i++ ) {
-    if (processes.at(i).getArrivalTime() < earliestTime) {
-      earliestTime = processes.at(i).getArrivalTime();
-      earliestProcess = processes.at(i);
+// Pop the earliest process from the queue
+Process ProcessBlock::popEarliestArrivalProcess(std::vector<Process> queue) {
+  Process earliestProcess = queue.at(0);
+  int earliestTime = queue.at(0).getArrivalTime();
+  int index = 0;
+
+  for (int i = 1; i < queue.size(); i++ ) {
+    if (queue.at(i).getArrivalTime() < earliestTime) {
+      earliestTime = queue.at(i).getArrivalTime();
+      earliestProcess = queue.at(i);
+      index = i;
     }
   }
-
+  queue.erase(queue.begin() + i);
   return earliestProcess;
 }
 
-int ProcessBlock::getEarliestArrivalProcessIndex() {
-  int earliestTime = processes.at(0).getArrivalTime();
-  int earliestProcessIndex = 0;
-  for (int i = 1; i < processes.size(); i++ ) {
-    if (processes.at(i).getArrivalTime() < earliestTime) {
-      earliestTime = processes.at(i).getArrivalTime();
-      earliestProcessIndex = i;
-    }
-  }
-  return earliestProcessIndex;
-}
-
+// Perform FCFS
 std::string ProcessBlock::doFirstComeFirstServe() {
   std::string output = "";
-  Process currentProcess;
-  int currentRunTime;
-  int currentProcessIndex;
-  int currentBurstTime;
-  std::string execution;
+  runningProcess = popEarliestArrivalProcess(readyQueue);
+  int currentRunTime = runningProcess.getArrivalTime();
 
-  currentProcess = getEarliestArrivalProcess();
-  currentRunTime = currentProcess.getArrivalTime();
-  currentProcessIndex = getEarliestArrivalProcessIndex();
-  currentBurstTime = currentProcess.getBurstTime();
-
-  while (processes.size() > 0 ) {
+  while (readyQueue.size() >= 0 ) {
     output += std::to_string(currentRunTime);
     output += " ";
-    output += std::to_string(currentProcessIndex + 1);
+    output += std::to_string(runningProcess.getIndex());
     output += " ";
-    output += std::to_string(currentBurstTime) + "X";
+    output += std::to_string(runningProcess.getBurstTime()) + "X";
     output += "\n";
 
-    processes.erase(processes.begin() + currentProcessIndex);
-    currentRunTime += currentBurstTime;
+    currentRunTime += runningProcess.getBurstTime();
     currentProcess = getEarliestArrivalProcess();
     if (currentRunTime < currentProcess.getArrivalTime()) {
       currentRunTime = currentProcess.getArrivalTime();
     }
 
-    currentProcessIndex = getEarliestArrivalProcessIndex();
-    currentBurstTime = currentProcess.getBurstTime();
+    runningProcess = popEarliestArrivalProcess(readyQueue);
   }
 
   std::cout << output << std::endl;
@@ -83,11 +71,22 @@ std::string ProcessBlock::doFirstComeFirstServe() {
   return output;
 }
 
-
+// execute based on innate command
 void ProcessBlock::execute() {
   if (command == "FCFS") {
     doFirstComeFirstServe();
   } else if (command == "SJP") {
     
+  }
+}
+
+//Print Process Block
+void ProcessBlock::printBlock() {
+  cout << "#: " << processCount << " | CMD: " << command;
+  for (int i = 0; i < processes.size(); i++) {
+    cout
+      << processes.at(i).getArrivalTime() << "\t"
+      << processes.at(i).getBurstTime() << "\t"
+      << processes.at(i).getPriority() << endl;
   }
 }

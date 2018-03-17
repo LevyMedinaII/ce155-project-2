@@ -13,17 +13,34 @@ std::string* parseProcessInfo(std::string line);
 int main(int argc, char * argv[]) {
   std::ifstream infile(argv[1]);
   std::string line;
-  std::vector<ProcessBlock> commandBlocks;
   int blockCount = 0;
+  int currentBlockIndex = -1;
+  int currentProcessIndex = 1;
+
+  std::vector<ProcessBlock> blocks;
   std::vector<std::string> v_line;
   // each line of the input file is accessible here via <line>
   while (getline(infile, line)) {
     v_line = parseLine(line);
-    if (v_line.size < 2) {
-
+    if (v_line.size() < 2) {
+      blockCount = v_line.at(0)
+    } else if (v_line.size() < 3) {
+      blocks.push_back(new ProcessBlock(v_line.at(0), v_line.at(1)));
+      currentProcessIndex = 1;
+      currentBlockIndex++ ;
+    } else if (v_line.size() < 4) {
+      blocks.at(currentBlockIndex).addProcessToBlock(
+        new Process(currentProcessIndex, v_line.at(0), v_line.at(1), v_line.at(2))
+      );
+      currentProcessIndex++;
     }
   }
 
+  for (int i = 0; i < blocks.size(); i++) {
+    cout << i + 1 << endl;
+    blocks.at(i).printBlock();
+  }
+  
   return 1;
 }
 

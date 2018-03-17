@@ -9,21 +9,22 @@ class ProcessBlock {
   std::vector<Process> processes;
   std::vector<Process> readyQueue;
   std::vector<Process> waitingQueue;
-  std::vector<Process> runningQueue;
+  Process runningProcess;
   
   public:
+    // Constructors
     ProcessBlock(int, std::string);
 
+    // Getters and Setters
     int getProcessCount();
     std::string getCommand();
-    Process getEarliestArrivalProcess();
-    int getEarliestArrivalProcessIndex();
 
-    void setProcessCount(int);
-    void setCommand(std::string);
-    void pushProcess(Process);
-
+    // Misc Methods
+    void addProcessToBlock(Process);
+    void pushAllToReady();
+    void moveProcess(std::vector<Process>, std::vector<Process>, int)
     std::string doFirstComeFirstServe();
-
     void execute();
+
+    void printBlock();
 };
