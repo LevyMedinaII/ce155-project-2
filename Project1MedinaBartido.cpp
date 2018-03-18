@@ -29,7 +29,7 @@ int main(int argc, char * argv[]) {
       std::stringstream processCount(v_line.at(0));
       int processN;
       processCount >> processN;
-      
+
       ProcessBlock block(processN, v_line.at(1));
       blocks.push_back(block);
       
@@ -56,6 +56,9 @@ int main(int argc, char * argv[]) {
     blocks.at(i).printBlock();
   }
   
+  for (int i = 0; i < blocks.size(); i++) {
+    blocks.at(i).execute();
+  }
   return 1;
 }
 

@@ -27,19 +27,19 @@ void ProcessBlock::pushAllToReady() {
 }
 
 // Pop the earliest process from the queue
-Process ProcessBlock::popEarliestArrivalProcess(std::vector<Process> queue) {
-  Process earliestProcess = queue.at(0);
-  int earliestTime = queue.at(0).getArrivalTime();
+Process ProcessBlock::popEarliestArrivalProcess() {
+  Process earliestProcess = readyQueue.at(0);
+  int earliestTime = readyQueue.at(0).getArrivalTime();
   int index = 0;
 
-  for (int i = 1; i < queue.size(); i++ ) {
-    if (queue.at(i).getArrivalTime() < earliestTime) {
-      earliestTime = queue.at(i).getArrivalTime();
-      earliestProcess = queue.at(i);
+  for (int i = 1; i < readyQueue.size(); i++ ) {
+    if (readyQueue.at(i).getArrivalTime() < earliestTime) {
+      earliestTime = readyQueue.at(i).getArrivalTime();
+      earliestProcess = readyQueue.at(i);
       index = i;
     }
   }
-  queue.erase(queue.begin() + index);
+  readyQueue.erase(readyQueue.begin() + index);
   return earliestProcess;
 }
 
@@ -47,10 +47,11 @@ Process ProcessBlock::popEarliestArrivalProcess(std::vector<Process> queue) {
 std::string ProcessBlock::doFirstComeFirstServe() {
   std::string output = "";
   pushAllToReady();
-  runningProcess = popEarliestArrivalProcess(readyQueue);
+  runningProcess = popEarliestArrivalProcess();
   int currentRunTime = runningProcess.getArrivalTime();
   
   while (readyQueue.size() >= 0 ) {
+    std::cout << "Ready Queue Size: " << readyQueue.size() << std::endl;
     output += std::to_string(currentRunTime);
     output += " ";
     output += std::to_string(runningProcess.getIndex());
@@ -59,7 +60,7 @@ std::string ProcessBlock::doFirstComeFirstServe() {
     output += "\n";
 
     currentRunTime += runningProcess.getBurstTime();
-    runningProcess = popEarliestArrivalProcess(readyQueue);
+    runningProcess = popEarliestArrivalProcess();
     if (currentRunTime < runningProcess.getArrivalTime()) {
       currentRunTime = runningProcess.getArrivalTime();
     }
@@ -73,15 +74,20 @@ std::string ProcessBlock::doFirstComeFirstServe() {
 // execute based on innate command
 void ProcessBlock::execute() {
   if (command == "FCFS") {
+    std::cout << "FCFS:" << std::endl;
     doFirstComeFirstServe();
   } else if (command == "SJP") {
     
+  } else if (command == "SRTF") {
+    std::cout << "SRTF:" << std::endl;
   }
 }
 
 //Print Process Block
 void ProcessBlock::printBlock() {
-  std::cout << "#: " << processCount << " | CMD: " << command << std::endl;
+  std::cout << "==================" << std::endl;
+  std::cout << "#: " << processCount << std::endl << "CMD: " << command << std::endl;
+  std::cout << "------------------" << std::endl;
   for (int i = 0; i < processes.size(); i++) {
     std::cout
       << processes.at(i).getArrivalTime() << "\t"

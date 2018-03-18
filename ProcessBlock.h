@@ -23,7 +23,7 @@ class ProcessBlock {
     void addProcessToBlock(Process);
     void pushAllToReady();
     void moveProcess(std::vector<Process>, std::vector<Process>, int);
-    Process popEarliestArrivalProcess(std::vector<Process>);
+    Process popEarliestArrivalProcess();
     std::string doFirstComeFirstServe();
     void execute();
 
