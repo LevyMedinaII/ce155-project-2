@@ -2,6 +2,7 @@ class Process {
   int index, arrivalTime, burstTime, priority;
   
   public:
+    Process();
     Process(int, int, int, int);
     
     int getIndex();

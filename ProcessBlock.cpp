@@ -39,7 +39,7 @@ Process ProcessBlock::popEarliestArrivalProcess(std::vector<Process> queue) {
       index = i;
     }
   }
-  queue.erase(queue.begin() + i);
+  queue.erase(queue.begin() + index);
   return earliestProcess;
 }
 
@@ -58,12 +58,10 @@ std::string ProcessBlock::doFirstComeFirstServe() {
     output += "\n";
 
     currentRunTime += runningProcess.getBurstTime();
-    currentProcess = getEarliestArrivalProcess();
-    if (currentRunTime < currentProcess.getArrivalTime()) {
-      currentRunTime = currentProcess.getArrivalTime();
-    }
-
     runningProcess = popEarliestArrivalProcess(readyQueue);
+    if (currentRunTime < runningProcess.getArrivalTime()) {
+      currentRunTime = runningProcess.getArrivalTime();
+    }
   }
 
   std::cout << output << std::endl;
@@ -82,11 +80,11 @@ void ProcessBlock::execute() {
 
 //Print Process Block
 void ProcessBlock::printBlock() {
-  cout << "#: " << processCount << " | CMD: " << command;
+  std::cout << "#: " << processCount << " | CMD: " << command;
   for (int i = 0; i < processes.size(); i++) {
-    cout
+    std::cout
       << processes.at(i).getArrivalTime() << "\t"
       << processes.at(i).getBurstTime() << "\t"
-      << processes.at(i).getPriority() << endl;
+      << processes.at(i).getPriority() << std::endl;
   }
 }

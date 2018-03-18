@@ -1,7 +1,8 @@
 #include "Process.h"
 
-using namespace std;
-
+Process::Process() {
+  
+}
 Process::Process (int i, int arrival, int burst, int p) {
   index = i;
   arrivalTime = arrival;
