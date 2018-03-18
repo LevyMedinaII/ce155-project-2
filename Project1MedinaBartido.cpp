@@ -8,7 +8,6 @@
 
 // Function declarations
 std::vector<std::string> parseLine(std::string line);
-std::string* parseProcessInfo(std::string line);
 
 int main(int argc, char * argv[]) {
   std::ifstream infile(argv[1]);
@@ -28,12 +27,15 @@ int main(int argc, char * argv[]) {
     } else if (v_line.size() < 3) {
       std::stringstream processCount(v_line.at(0));
       int processN;
-      processCount >> processN;
-      blocks.push_back(ProcessBlock(processN, v_line.at(1)));
+
+      ProcessBlock block(processN, v_line.at(1));
+      blocks.push_back(block);
+      
       currentProcessIndex = 1;
       currentBlockIndex++ ;
     } else if (v_line.size() < 4) {
       int aTime, bTime, prio;
+
       std::stringstream arrival(v_line.at(0));
       std::stringstream burst(v_line.at(1));
       std::stringstream p(v_line.at(2));
@@ -41,9 +43,9 @@ int main(int argc, char * argv[]) {
       arrival >> aTime;
       burst >> bTime;
       p >> prio;
-      blocks.at(currentBlockIndex).addProcessToBlock(
-        Process(currentProcessIndex, aTime, bTime, prio)
-      );
+
+      Process process(currentProcessIndex, aTime, bTime, prio);
+      blocks.at(currentBlockIndex).addProcessToBlock(process);
       currentProcessIndex++;
     }
   }
