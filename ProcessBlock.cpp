@@ -51,7 +51,6 @@ std::string ProcessBlock::doFirstComeFirstServe() {
   int currentRunTime = runningProcess.getArrivalTime();
   
   while (readyQueue.size() >= 0 ) {
-    std::cout << "Ready Queue Size: " << readyQueue.size() << std::endl;
     output += std::to_string(currentRunTime);
     output += " ";
     output += std::to_string(runningProcess.getIndex());
@@ -60,13 +59,17 @@ std::string ProcessBlock::doFirstComeFirstServe() {
     output += "\n";
 
     currentRunTime += runningProcess.getBurstTime();
+
+    if (readyQueue.size() == 0) {
+      break;
+    }
     runningProcess = popEarliestArrivalProcess();
     if (currentRunTime < runningProcess.getArrivalTime()) {
       currentRunTime = runningProcess.getArrivalTime();
     }
   }
 
-  std::cout << output << std::endl;
+  std::cout << output;
 
   return output;
 }
@@ -81,6 +84,7 @@ void ProcessBlock::execute() {
   } else if (command == "SRTF") {
     std::cout << "SRTF:" << std::endl;
   }
+  std::cout << "------------------" << std::endl;
 }
 
 //Print Process Block

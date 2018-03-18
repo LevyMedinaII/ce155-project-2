@@ -56,6 +56,10 @@ int main(int argc, char * argv[]) {
     blocks.at(i).printBlock();
   }
   
+  std::cout << "==================" << std::endl;
+  std::cout << "|     OUTPUT     |" << std::endl;
+  std::cout << "==================" << std::endl;
+  
   for (int i = 0; i < blocks.size(); i++) {
     blocks.at(i).execute();
   }
