@@ -12,7 +12,7 @@ std::string ProcessBlock::getCommand() { return command; }
 
 // Add a process to the processes vector
 void ProcessBlock::addProcessToBlock(Process p) {
-  if (readyQueue.size() < processCount ) {
+  if (processes.size() < processCount ) {
     processes.push_back(p);
   } else {
     std::cout << "Error: Maximum allowable readyQueue for block already reached." << std::endl;
@@ -46,9 +46,10 @@ Process ProcessBlock::popEarliestArrivalProcess(std::vector<Process> queue) {
 // Perform FCFS
 std::string ProcessBlock::doFirstComeFirstServe() {
   std::string output = "";
+  pushAllToReady();
   runningProcess = popEarliestArrivalProcess(readyQueue);
   int currentRunTime = runningProcess.getArrivalTime();
-
+  
   while (readyQueue.size() >= 0 ) {
     output += std::to_string(currentRunTime);
     output += " ";
@@ -80,7 +81,7 @@ void ProcessBlock::execute() {
 
 //Print Process Block
 void ProcessBlock::printBlock() {
-  std::cout << "#: " << processCount << " | CMD: " << command;
+  std::cout << "#: " << processCount << " | CMD: " << command << std::endl;
   for (int i = 0; i < processes.size(); i++) {
     std::cout
       << processes.at(i).getArrivalTime() << "\t"

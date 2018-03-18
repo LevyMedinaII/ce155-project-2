@@ -24,10 +24,12 @@ int main(int argc, char * argv[]) {
     if (v_line.size() < 2) {
       std::stringstream pnum(v_line.at(0));
       pnum >> blockCount;
+      std::cout << blockCount << std::endl;
     } else if (v_line.size() < 3) {
       std::stringstream processCount(v_line.at(0));
       int processN;
-
+      processCount >> processN;
+      
       ProcessBlock block(processN, v_line.at(1));
       blocks.push_back(block);
       
@@ -51,7 +53,6 @@ int main(int argc, char * argv[]) {
   }
 
   for (int i = 0; i < blocks.size(); i++) {
-    std::cout << i + 1 << std::endl;
     blocks.at(i).printBlock();
   }
   
@@ -72,11 +73,9 @@ std::vector<std::string> parseLine(std::string line) {
   
   while ((pos = line.find(delimiter)) != std::string::npos) {
       token = line.substr(0, pos);
-      std::cout << token << std::endl;
       line.erase(0, pos + delimiter.length());
       output.push_back(token);
   }
-  std::cout << line << std::endl;
   output.push_back(line);
   return output;
 }
