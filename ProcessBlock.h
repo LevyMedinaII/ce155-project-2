@@ -24,7 +24,9 @@ class ProcessBlock {
     void pushAllToReady();
     void pushAllApplicableToReady(int);
     void moveProcess(std::vector<Process>, std::vector<Process>, int);
-    Process popEarliestArrivalProcess();
+    Process getEarliestArrivalProcess();
+    Process popEarliestArrivalProcessFromReady();
+    Process popLeastBurstTimeProcessFromReady();
     std::string doFirstComeFirstServe();
     std::string doShortestJobFirst();
     void execute();

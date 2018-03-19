@@ -29,10 +29,10 @@ void ProcessBlock::pushAllToReady() {
 }
 
 // Push all processes given elapsed time to the ready queue
-// Used in SRTF
+// Used in SJF
 void ProcessBlock::pushAllApplicableToReady(int time) {
   for (int i = 0; i < processes.size(); i++) {
-    if (readyQueue.at(i).getArrivalTime() <= time) {
+    if (processes.at(i).getArrivalTime() <= time) {
       readyQueue.push_back(processes.at(i));
       processes.erase(processes.begin()+i);
       i--;
@@ -40,8 +40,24 @@ void ProcessBlock::pushAllApplicableToReady(int time) {
   }
 }
 
-// Pop the earliest process from the queue
-Process ProcessBlock::popEarliestArrivalProcess() {
+// Get the earliest arrival process from processes
+Process ProcessBlock::getEarliestArrivalProcess() {
+  Process earliestProcess = processes.at(0);
+  int earliestTime = processes.at(0).getArrivalTime();
+  int index = 0;
+
+  for (int i = 1; i < processes.size(); i++ ) {
+    if (processes.at(i).getArrivalTime() < earliestTime) {
+      earliestTime = processes.at(i).getArrivalTime();
+      earliestProcess = processes.at(i);
+      index = i;
+    }
+  }
+  return earliestProcess;
+}
+
+// Pop the earliest process from the readyQueue
+Process ProcessBlock::popEarliestArrivalProcessFromReady() {
   Process earliestProcess = readyQueue.at(0);
   int earliestTime = readyQueue.at(0).getArrivalTime();
   int index = 0;
@@ -57,11 +73,29 @@ Process ProcessBlock::popEarliestArrivalProcess() {
   return earliestProcess;
 }
 
+// Pop the process with the least burst time from the readyQueue
+Process ProcessBlock::popLeastBurstTimeProcessFromReady() {
+  Process leastBurstTimeProcess = readyQueue.at(0);
+  int leastBurstTime = readyQueue.at(0).getBurstTime();
+  int index = 0;
+  
+  for (int i = 0; i < readyQueue.size(); i++ ) {
+    if (readyQueue.at(i).getBurstTime() < leastBurstTime) {
+      leastBurstTime = readyQueue.at(i).getBurstTime();
+      leastBurstTimeProcess = readyQueue.at(i);
+      index = i;
+    }
+  }
+
+  readyQueue.erase(readyQueue.begin() + index);
+  return leastBurstTimeProcess;
+}
+
 // Perform FCFS
 std::string ProcessBlock::doFirstComeFirstServe() {
   std::string output = "";
   pushAllToReady();
-  runningProcess = popEarliestArrivalProcess();
+  runningProcess = popEarliestArrivalProcessFromReady();
   int currentRunTime = runningProcess.getArrivalTime();
   
   while (readyQueue.size() >= 0 ) {
@@ -77,10 +111,51 @@ std::string ProcessBlock::doFirstComeFirstServe() {
     if (readyQueue.size() == 0) {
       break;
     }
-    runningProcess = popEarliestArrivalProcess();
+    runningProcess = popEarliestArrivalProcessFromReady();
     if (currentRunTime < runningProcess.getArrivalTime()) {
       currentRunTime = runningProcess.getArrivalTime();
     }
+  }
+
+  std::cout << output;
+
+  return output;
+}
+
+// Perform SJF
+std::string ProcessBlock::doShortestJobFirst() {
+  std::string output = "";
+
+  int currentRunTime = getEarliestArrivalProcess().getArrivalTime();
+  pushAllApplicableToReady(currentRunTime);
+  runningProcess = popEarliestArrivalProcessFromReady();
+  
+  while (processes.size() >= 0 || readyQueue.size() > 0) {
+    std::cout << "Current Run Time: " << currentRunTime << std::endl;
+    output += std::to_string(currentRunTime);
+    output += " ";
+    output += std::to_string(runningProcess.getIndex());
+    output += " ";
+    output += std::to_string(runningProcess.getBurstTime()) + "X";
+    output += "\n";
+
+
+    currentRunTime += runningProcess.getBurstTime();
+
+    // If run time is less than the earliest arrival time in processes
+    if (processes.size() > 0) {
+      if (currentRunTime < getEarliestArrivalProcess().getArrivalTime()) {
+        // Set Current Run Time to earliest available process
+        currentRunTime = getEarliestArrivalProcess().getArrivalTime();
+      }
+      pushAllApplicableToReady(currentRunTime);
+    }
+    
+    if (processes.size() == 0 && readyQueue.size() == 0) {
+      break;
+    }
+    
+    runningProcess = popLeastBurstTimeProcessFromReady();
   }
 
   std::cout << output;
@@ -94,8 +169,8 @@ void ProcessBlock::execute() {
     std::cout << "FCFS:" << std::endl;
     doFirstComeFirstServe();
   } else if (command == "SJF") {
-    std::cout << "FCFS:" << std::endl;
-    
+    std::cout << "SJF:" << std::endl;
+    doShortestJobFirst();
   } else if (command == "SRTF") {
     std::cout << "SRTF:" << std::endl;
   }
