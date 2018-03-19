@@ -20,9 +20,23 @@ void ProcessBlock::addProcessToBlock(Process p) {
 }
 
 // Push all processes in block to the ready queue
+// Used in FCFS
 void ProcessBlock::pushAllToReady() {
   for (int i = 0; i < processes.size(); i++) {
     readyQueue.push_back(processes.at(i));
+  }
+  processes.clear();
+}
+
+// Push all processes given elapsed time to the ready queue
+// Used in SRTF
+void ProcessBlock::pushAllApplicableToReady(int time) {
+  for (int i = 0; i < processes.size(); i++) {
+    if (readyQueue.at(i).getArrivalTime() <= time) {
+      readyQueue.push_back(processes.at(i));
+      processes.erase(processes.begin()+i);
+      i--;
+    }
   }
 }
 
@@ -79,7 +93,8 @@ void ProcessBlock::execute() {
   if (command == "FCFS") {
     std::cout << "FCFS:" << std::endl;
     doFirstComeFirstServe();
-  } else if (command == "SJP") {
+  } else if (command == "SJF") {
+    std::cout << "FCFS:" << std::endl;
     
   } else if (command == "SRTF") {
     std::cout << "SRTF:" << std::endl;

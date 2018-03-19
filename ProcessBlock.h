@@ -22,9 +22,11 @@ class ProcessBlock {
     // Misc Methods
     void addProcessToBlock(Process);
     void pushAllToReady();
+    void pushAllApplicableToReady(int);
     void moveProcess(std::vector<Process>, std::vector<Process>, int);
     Process popEarliestArrivalProcess();
     std::string doFirstComeFirstServe();
+    std::string doShortestJobFirst();
     void execute();
 
     void printBlock();
