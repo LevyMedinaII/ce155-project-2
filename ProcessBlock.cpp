@@ -128,7 +128,7 @@ std::string ProcessBlock::doShortestJobFirst() {
 
   int currentRunTime = getEarliestArrivalProcess().getArrivalTime();
   pushAllApplicableToReady(currentRunTime);
-  runningProcess = popEarliestArrivalProcessFromReady();
+  runningProcess = popLeastBurstTimeProcessFromReady();
   
   while (processes.size() >= 0 || readyQueue.size() > 0) {
     std::cout << "Current Run Time: " << currentRunTime << std::endl;
@@ -139,12 +139,11 @@ std::string ProcessBlock::doShortestJobFirst() {
     output += std::to_string(runningProcess.getBurstTime()) + "X";
     output += "\n";
 
-
     currentRunTime += runningProcess.getBurstTime();
 
     // If run time is less than the earliest arrival time in processes
     if (processes.size() > 0) {
-      if (currentRunTime < getEarliestArrivalProcess().getArrivalTime()) {
+      if (currentRunTime < getEarliestArrivalProcess().getArrivalTime() && readyQueue.size() == 0) {
         // Set Current Run Time to earliest available process
         currentRunTime = getEarliestArrivalProcess().getArrivalTime();
       }
