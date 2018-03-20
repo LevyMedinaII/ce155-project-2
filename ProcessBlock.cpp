@@ -131,7 +131,6 @@ std::string ProcessBlock::doShortestJobFirst() {
   runningProcess = popLeastBurstTimeProcessFromReady();
   
   while (processes.size() >= 0 || readyQueue.size() > 0) {
-    std::cout << "Current Run Time: " << currentRunTime << std::endl;
     output += std::to_string(currentRunTime);
     output += " ";
     output += std::to_string(runningProcess.getIndex());
