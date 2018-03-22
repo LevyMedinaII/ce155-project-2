@@ -48,6 +48,7 @@ class ProcessBlock {
     Process executeRoundRobin(int);
     std::string doRoundRobin();
     Process getHighestPriority();
+    Process getHighestPriorityFromReady();
     std::string doFirstComeFirstServe();
     std::string doShortestJobFirst();
     std::string doPriority();

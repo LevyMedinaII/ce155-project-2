@@ -84,6 +84,7 @@ int ProcessBlock::getNextArrivalTimePriority(int currTime, int prio ) {
       if((processes.at(i).getArrivalTime() < nextTime)&&(processes.at(i).getPriority()<prio))
       {
         nextTime=processes.at(i).getArrivalTime();
+        std::cout<<"nexttime"<<nextTime<<"With "<<prio<<" VS "<<processes.at(i).getPriority()<<std::endl;
         index = i;
       }
 
@@ -125,6 +126,21 @@ Process ProcessBlock::getHighestPriority() {
     if (processes.at(i).getPriority() < firstPriority) {
       firstPriority = processes.at(i).getPriority();
       firstProcess = processes.at(i);
+      index = i;
+    }
+  }
+  return firstProcess;
+}
+
+Process ProcessBlock::getHighestPriorityFromReady() {
+  Process firstProcess = readyQueue.at(0);
+  int firstPriority = readyQueue.at(0).getPriority();
+  int index = 0;
+
+  for (int i = 1; i < readyQueue.size(); i++ ) {
+    if (readyQueue.at(i).getPriority() < firstPriority) {
+      firstPriority = readyQueue.at(i).getPriority();
+      firstProcess = readyQueue.at(i);
       index = i;
     }
   }
@@ -307,6 +323,7 @@ Process ProcessBlock::popHighestPriorityProcessFromReady(int time) {
     highestPriorityProcess = readyQueue.at(index);
     if(currBurst<=0)
     {
+      readyQueue.at(index).setBurstTime(0);
       readyQueue.erase(readyQueue.begin() + index); 
     }
   }
@@ -345,8 +362,11 @@ void ProcessBlock::printSummary(int waitingTime, int responseTime, int turnaroun
 std::string ProcessBlock::doPriority() {
   std::string output = "";
   currentRunTime = getEarliestArrivalProcess().getArrivalTime();
-  int nextTime = getNextArrivalTimePriority(currentRunTime, getEarliestArrivalProcess().getPriority());
+
+  
+  
   pushAllApplicableToReady(currentRunTime);
+  int nextTime = getNextArrivalTimePriority(currentRunTime, getHighestPriorityFromReady().getPriority());
   runningProcess = popHighestPriorityProcessFromReady(nextTime);
   currentRunTime = runningProcess.getArrivalTime();
   while (readyQueue.size() >= 0 ) {
@@ -364,7 +384,7 @@ std::string ProcessBlock::doPriority() {
     currentRunTime += runningProcess.getElapsedTime();
     pushAllApplicableToReady(currentRunTime);
 
-    if (readyQueue.size() == 0) {
+    if ((readyQueue.size() == 0) && (processes.size()==0)) {
       break;
     }
     if(processes.size()>0)
@@ -383,6 +403,9 @@ std::string ProcessBlock::doPriority() {
   }
 
   std::cout << output;
+
+  std::cout <<std::endl<<"Waiting: "<<waitingTime;
+  std::cout <<std::endl<<"CPU: "<<cpuUtilization;
 
   return output;
 }
