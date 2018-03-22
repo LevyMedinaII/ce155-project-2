@@ -38,17 +38,34 @@ int main(int argc, char * argv[]) {
     } else if (v_line.size() < 4) {
       int aTime, bTime, prio;
 
+      int quantumTime;
+      std::string quantumCmd;
+      int processN;
+
       std::stringstream arrival(v_line.at(0));
       std::stringstream burst(v_line.at(1));
       std::stringstream p(v_line.at(2));
 
-      arrival >> aTime;
-      burst >> bTime;
-      p >> prio;
+      if (v_line.at(1) == "RR") {
+        arrival >> processN;
+        burst >> quantumCmd;
+        p >> quantumTime;
 
-      Process process(currentProcessIndex, aTime, bTime, prio);
-      blocks.at(currentBlockIndex).addProcessToBlock(process);
-      currentProcessIndex++;
+        ProcessBlock block(processN, quantumCmd);
+        block.setQuantumTime(quantumTime);
+        blocks.push_back(block);
+
+        currentProcessIndex = 1;
+        currentBlockIndex++ ;
+      } else {
+        burst >> bTime;
+        arrival >> aTime;
+        p >> prio;
+
+        Process process(currentProcessIndex, aTime, bTime, prio,0,aTime);
+        blocks.at(currentBlockIndex).addProcessToBlock(process);
+        currentProcessIndex++;
+      }
     }
   }
 
