@@ -96,16 +96,14 @@ int main(int argc, char * argv[]) {
       v_line_int.clear();
     }
 
-    // for(const int& v_line_value: v_line_int) {
-    //   processCount = 
-    // }
+    // deadlock findloop
+    std::cout << "RESULT:" << std::endl;
+    searchForDeadlock(processCount, allottableResources, processBlock);
     
+    allottableResources.clear();
+    processBlock.clear();
     v_line_int.clear();
   }
-
-  // deadlock findloop
-  std::cout << "RESULT:" << std::endl;
-  searchForDeadlock(processCount, allottableResources, processBlock);
 }
 
 // Function definitions
