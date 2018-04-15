@@ -56,10 +56,10 @@ int main(int argc, char * argv[]) {
     }
 
     allottableResources = v_line_int;
-    std::cout << "ALLOTABLE RESOURCES: " << std::endl;
+    std::cout << "ALLOTTABLE RESOURCES: " << std::endl;
     for(int i = 0; i < allottableResources.size(); i++)
       std::cout << allottableResources.at(i) << " ";
-
+    std::cout << std::endl;
     v_line_int.clear();
 
     /* == HANDLE PROCESS PRE-ALLOCATION == */
