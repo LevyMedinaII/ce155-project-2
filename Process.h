@@ -11,9 +11,11 @@ class Process {
     Process(std::vector<int>);
     
     int getResourceAtIndex(int);
-    void setResourceAtIndex(int, int);
-
     int getResourceRequestedAtIndex(int);
+
+    bool isExecutable(std::vector<int>);
+
+    void setResourceAtIndex(int, int);
     void setResourcesRequested(std::vector<int>);
 
     void printProcess();

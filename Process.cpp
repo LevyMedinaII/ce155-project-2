@@ -7,6 +7,18 @@ Process::Process (std::vector<int> input) {
   resourcesCount = input;
 }
 
+bool Process::isExecutable(std::vector<int> allottableProcesses) {
+  for(int i = 0; i < resourcesCount.size(); i++) {
+    if (allottableProcesses.at(i) < resourcesRequested.at(i)) {
+      break;
+    }
+    if (i + 1 == resourcesCount.size()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 int Process::getResourceAtIndex(int index) { return resourcesCount.at(index); }
 void Process::setResourceAtIndex(int index, int value) { resourcesCount.at(index) = value; }
 
