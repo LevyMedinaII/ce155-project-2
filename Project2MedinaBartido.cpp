@@ -171,13 +171,13 @@ void searchForDeadlock(
         std::cout << "!!!DEADLOCK!!!" << std::endl;
         break;
       } else {
-        std::cout << index;
+        std::cout << index + 1;
         if (i < processCount-1)
           std::cout << "-";
         else
           std::cout << std::endl;
       }
     }
-    
+
     std:: cout << std:: endl;
 }
