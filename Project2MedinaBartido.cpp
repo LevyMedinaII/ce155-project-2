@@ -13,15 +13,11 @@ int main(int argc, char * argv[]) {
   std::ifstream infile(argv[1]);
   std::string line;
 
-  int blockCount = 0;
-  int currentBlockIndex = -1;
-  int currentProcessIndex = 1;
-
   int testCases;
   int processCount;
   int resourceTypes;
-  std::vector<int> allotableResources;
 
+  std::vector<int> allotableResources;
   std::vector<Process> processBlock;
   std::vector<std::string> v_line;
   std::vector<int> v_line_int;
@@ -73,24 +69,27 @@ int main(int argc, char * argv[]) {
 
       // create Processes
       processBlock.push_back(Process(v_line_int));
+      std::cout << "HELD RESOURCES:" << std::endl;
       processBlock.at(processCursor).printProcess();
       v_line_int.clear();
     }
 
     /* == HANDLE PROCESS REQUESTS == */
     // for each process...
-    // for (int processCursor = 0; processCursor < processCount; processCursor++) {
-    //   getline(infile, line);
-    //   v_line = parseLine(line);
-    //   for (int i = 0; i < v_line.size(); i++) {
-    //     int num = atoi(v_line.at(i).c_str());
-    //     v_line_int.push_back(num);
-    //   }
+    for (int processCursor = 0; processCursor < processCount; processCursor++) {
+      getline(infile, line);
+      v_line = parseLine(line);
+      for (int i = 0; i < v_line.size(); i++) {
+        int num = atoi(v_line.at(i).c_str());
+        v_line_int.push_back(num);
+      }
 
-    //   // create Processes
-    //   processBlock.push_back(Process(v_line_int));
-    //   v_line_int.clear();
-    // }
+      // create Processes
+      processBlock.push_back(Process(v_line_int));
+      std::cout << "REQUESTED RESOURCES:" << std::endl;
+      processBlock.at(processCursor).printProcessRequests();
+      v_line_int.clear();
+    }
 
     // for(const int& v_line_value: v_line_int) {
     //   processCount = 
@@ -98,68 +97,6 @@ int main(int argc, char * argv[]) {
     
     v_line_int.clear();
   }
-
-
-
-  //   if (v_line.size() < 2) {
-  //     std::stringstream pnum(v_line.at(0));
-  //     pnum >> blockCount;
-  //     std::cout << blockCount << std::endl;
-  //   } else if (v_line.size() < 3) {
-  //     std::stringstream processCount(v_line.at(0));
-  //     int processN;
-  //     processCount >> processN;
-
-  //     ProcessBlock block(processN, v_line.at(1));
-  //     blocks.push_back(block);
-      
-  //     currentProcessIndex = 1;
-  //     currentBlockIndex++ ;
-  //   } else if (v_line.size() < 4) {
-  //     int aTime, bTime, prio;
-
-  //     int quantumTime;
-  //     std::string quantumCmd;
-  //     int processN;
-
-  //     std::stringstream arrival(v_line.at(0));
-  //     std::stringstream burst(v_line.at(1));
-  //     std::stringstream p(v_line.at(2));
-
-  //     if (v_line.at(1) == "RR") {
-  //       arrival >> processN;
-  //       burst >> quantumCmd;
-  //       p >> quantumTime;
-
-  //       ProcessBlock block(processN, quantumCmd);
-  //       block.setQuantumTime(quantumTime);
-  //       blocks.push_back(block);
-
-  //       currentProcessIndex = 1;
-  //       currentBlockIndex++ ;
-  //     } else {
-  //       burst >> bTime;
-  //       arrival >> aTime;
-  //       p >> prio;
-
-  //       Process process(currentProcessIndex, aTime, bTime, prio,0,aTime);
-  //       blocks.at(currentBlockIndex).addProcessToBlock(process);
-  //       currentProcessIndex++;
-  //     }
-  // }
-
-  // for (int i = 0; i < blocks.size(); i++) {
-  //   blocks.at(i).printBlock();
-  // }
-  
-  // std::cout << "==================" << std::endl;
-  // std::cout << "|     OUTPUT     |" << std::endl;
-  // std::cout << "==================" << std::endl;
-  
-  // for (int i = 0; i < blocks.size(); i++) {
-  //   blocks.at(i).execute();
-  // }
-  // return 1;
 }
 
 // Function definitions
@@ -181,5 +118,9 @@ std::vector<std::string> parseLine(std::string line) {
   }
   output.push_back(line);
   return output;
+}
+
+void checkForDeadlock(std::vector<int> allottableResources, std::vector<Process> processBlock) {
+  
 }
 

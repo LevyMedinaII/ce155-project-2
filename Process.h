@@ -4,14 +4,20 @@
 
 class Process {
   std::vector<int> resourcesCount;
+  std::vector<int> resourcesRequested;
   
   public:
     Process();
     Process(std::vector<int>);
     
     int getResourceAtIndex(int);
-    int setResourceAtIndex(int, int);
+    void setResourceAtIndex(int, int);
+
+    int getResourceRequestedAtIndex(int);
+    void setResourcesRequested(std::vector<int>);
+
     void printProcess();
+    void printProcessRequests();
     // int getArrivalTime();
     // int getBurstTime();
     // int getPriority();
